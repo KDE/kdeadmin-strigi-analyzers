@@ -2,6 +2,7 @@
 Type=Service
 Name=RPM Stats
 Name[af]=Rpm Statistiek
+Name[ar]=إحصائيَات RPMS
 Name[bs]=RPM statistika
 Name[ca]=L'estat dels RPM
 Name[cs]=RPM statistiky
@@ -41,6 +42,7 @@ Name[sr]=RPM Статистике
 Name[sr@Latn]=RPM Statistike
 Name[sv]=RPM-statistik
 Name[ta]=ஆர்பியம் புள்ளி விவரம்
+Name[tg]=Статистикаи RPM
 Name[th]=สถิติของ RPM
 Name[tr]=RPM İstatistikleri
 Name[uk]=Дані RPM
