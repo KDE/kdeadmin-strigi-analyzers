@@ -1,9 +1,11 @@
 [Desktop Entry]
+Encoding=UTF-8
 Type=Service
 Name=RPM Stats
 Name[af]=Rpm Statistiek
 Name[ar]=إحصائيَات RPMS
 Name[az]=RPM Statistikaları
+Name[br]=Stadegoù gant RPM
 Name[bs]=RPM statistika
 Name[ca]=L'estat dels RPM
 Name[cs]=RPM statistiky
@@ -31,6 +33,7 @@ Name[mt]=Statistika RPM
 Name[nb]=RPM statistikk
 Name[nl]=RPM-statistieken
 Name[nn]=RPM-statistikk
+Name[pa]=RPM ਸਥਿਤੀ
 Name[pl]=Dane plików RPM
 Name[pt]=Informações de RPMs
 Name[pt_BR]=Estados do RPM

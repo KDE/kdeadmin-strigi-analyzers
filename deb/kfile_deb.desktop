@@ -1,9 +1,11 @@
 [Desktop Entry]
 Type=Service
+Encoding=UTF-8
 Name=DEB Stats
 Name[af]=Deb Statistiek
 Name[ar]=إحصائيَات DEB
 Name[az]=DEB Statistikaları
+Name[br]=Stadegoù gant DEB
 Name[bs]=DEB statistika
 Name[ca]=L'estat dels DEB
 Name[cs]=DEB statistiky
@@ -30,6 +32,7 @@ Name[mt]=Statistika DEB
 Name[nb]=DEB statistikk
 Name[nl]=DEB-statistieken
 Name[nn]=DEB-statistikk
+Name[pa]=DEB ਸਥਿਤੀ
 Name[pl]=Dane pakietów DEB
 Name[pt]=Informações de DEBs
 Name[pt_BR]=Estados DEB
