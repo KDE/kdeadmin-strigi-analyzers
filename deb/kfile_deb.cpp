@@ -41,7 +41,7 @@
 
 typedef KGenericFactory<KDebPlugin> DebFactory;
 
-K_EXPORT_COMPONENT_FACTORY(kfile_deb, DebFactory( "kfile_deb" ));
+K_EXPORT_COMPONENT_FACTORY(kfile_deb, DebFactory( "kfile_deb" ))
 
 KDebPlugin::KDebPlugin(QObject *parent, const char *name,
                        const QStringList &args)
