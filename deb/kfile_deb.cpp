@@ -94,7 +94,7 @@ bool KDebPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
         controldev.open( IO_ReadOnly );
         while (!controldev.atEnd()) {
             char linebuf[100];
-            controldev.readLine(linebuf, 100);
+            controldev.readLine(linebuf, sizeof( linebuf ));
             QString line(linebuf);
             int fieldstart = line.find(QRegExp(":"), 0) + 2;
             if (fieldstart == 1) break;
