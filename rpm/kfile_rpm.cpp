@@ -69,7 +69,7 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
     {
         kdDebug(7034) << "Couldn't open " << QFile::encodeName(info.path()) << endl;
         return false;
-    }    
+    }
 
     QDataStream dstream(&file);
     dstream.setByteOrder(QDataStream::BigEndian);
@@ -108,7 +108,7 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
 			case RPMTAG_SIZE: tagname = "Size"; break;
 			case RPMTAG_RELEASE: tagname = "Release"; break;
 			case RPMTAG_VENDOR: tagname = "Vendor"; break;
-			case RPMTAG_PACKAGER: tagname = "Packager";
+			case RPMTAG_PACKAGER: tagname = "Packager"; break;
 			case RPMTAG_DESCRIPTION: tagname = "Comment"; break;
 		}
 		
