@@ -80,7 +80,7 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
     
     for (pass = 0; pass < 2; pass++) { // RPMs have two headers
 	uint32_t storepos, entries, size, reserved;
-	uint8_t version;
+	unsigned char version;
 	char magic[3];
 	
 	dstream.readRawBytes(magic, 3);	
