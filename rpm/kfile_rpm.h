@@ -40,6 +40,7 @@ public:
 #define	RPMTAG_VERSION			1001
 #define RPMTAG_RELEASE                  1002
 #define	RPMTAG_SUMMARY			1004
+#define RPMTAG_DESCRIPTION		1005
 #define	RPMTAG_SIZE			1009
 #define RPMTAG_VENDOR                   1011
 #define RPMTAG_PACKAGER                 1015

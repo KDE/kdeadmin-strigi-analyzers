@@ -19,17 +19,9 @@
 
 #include <config.h>
 
-#include <kprocess.h>
-#include <klocale.h>
 #include <kgenericfactory.h>
-#include <kstringvalidator.h>
 #include <kdebug.h>
-
-#include <qdict.h>
-#include <qvalidator.h>
-#include <qcstring.h>
 #include <qfile.h>
-#include <qdatetime.h>
 
 #if !defined(__osf__)
 #include <inttypes.h>
@@ -58,10 +50,14 @@ KRpmPlugin::KRpmPlugin(QObject *parent, const char *name,
     item = addItemInfo(group, "Version", i18n("Version"), QVariant::String);
     item = addItemInfo(group, "Release", i18n("Release"), QVariant::Int);
     item = addItemInfo(group, "Summary", i18n("Summary"), QVariant::String);
+    setAttributes ( item, KFileMimeTypeInfo::Description );
     item = addItemInfo(group, "Group", i18n("Group"), QVariant::String);
     item = addItemInfo(group, "Size", i18n("Size"), QVariant::Int);
+    setUnit ( item, KFileMimeTypeInfo::Bytes );
     item = addItemInfo(group, "Vendor", i18n("Vendor"), QVariant::String );
     item = addItemInfo(group, "Packager", i18n("Packager"), QVariant::String );
+    item = addItemInfo(group, "Comment", i18n("Comment"), QVariant::String);
+    setAttributes( item, KFileMimeTypeInfo::MultiLine );
 }
 
 bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
@@ -105,14 +101,15 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
 		offset += storepos;
 		
 		switch (tag) {
-		    case RPMTAG_NAME: tagname = "Name"; break;
-		    case RPMTAG_VERSION: tagname = "Version"; break;
-		    case RPMTAG_SUMMARY: tagname = "Summary"; break;
-		    case RPMTAG_GROUP: tagname = "Group"; break;
-		    case RPMTAG_SIZE: tagname = "Size"; break;
-		    case RPMTAG_RELEASE: tagname = "Release"; break;
-		    case RPMTAG_VENDOR: tagname = "Vendor"; break;
-		    case RPMTAG_PACKAGER: tagname = "Packager";
+			case RPMTAG_NAME: tagname = "Name"; break;
+			case RPMTAG_VERSION: tagname = "Version"; break;
+			case RPMTAG_SUMMARY: tagname = "Summary"; break;
+			case RPMTAG_GROUP: tagname = "Group"; break;
+			case RPMTAG_SIZE: tagname = "Size"; break;
+			case RPMTAG_RELEASE: tagname = "Release"; break;
+			case RPMTAG_VENDOR: tagname = "Vendor"; break;
+			case RPMTAG_PACKAGER: tagname = "Packager";
+			case RPMTAG_DESCRIPTION: tagname = "Comment"; break;
 		}
 		
 		if (! tagname.isEmpty()) {
