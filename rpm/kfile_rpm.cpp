@@ -59,12 +59,16 @@ KRpmPlugin::KRpmPlugin(QObject *parent, const char *name,
     item = addItemInfo(group, "Archive Offset", i18n("Archive Offset"), QVariant::Int);
     item = addItemInfo(group, "Comment", i18n("Comment"), QVariant::String);
     setAttributes( item, KFileMimeTypeInfo::MultiLine );
+
+    group = addGroupInfo(info, "All tags", i18n("All tags"));
+    addVariableInfo(group, QVariant::String, 0);
 }
 
-bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
+bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint what)
 {
     QFile file(info.path());
     int pass;
+    KFileMetaInfoGroup general, all;
 
     if (!file.open(IO_ReadOnly))
     {
@@ -74,15 +78,16 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
 
     QDataStream dstream(&file);
     dstream.setByteOrder(QDataStream::BigEndian);
-    KFileMetaInfoGroup group = appendGroup(info, "General");
-    
+    general = appendGroup(info, "General");
+    if (what == KFileMetaInfo::Everything) all = appendGroup(info, "All tags");
+
     file.at(96); // Seek past old lead
-    
+
     for (pass = 0; pass < 2; pass++) { // RPMs have two headers
 	uint32_t storepos, entries, size, reserved;
 	unsigned char version;
 	char magic[3];
-	
+
 	dstream.readRawBytes(magic, 3);
 	dstream >> version >> reserved >> entries >> size;
 	if (memcmp(magic, RPM_HEADER_MAGIC, 3)) return false;
@@ -94,13 +99,13 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
 		file.at(file.at() + (8 - (file.at() % 8)) % 8); // Skip padding
 		continue;
 	}
-	
+
 	if (entries < 500) while (entries--) { // Just in case something goes wrong, limit to 500
 		uint32_t tag, type, offset, count;
 		QString tagname;
 		dstream >> tag >> type >> offset >> count;
 		offset += storepos;
-		
+
 		switch (tag) {
 			case RPMTAG_NAME: tagname = "Name"; break;
 			case RPMTAG_VERSION: tagname = "Version"; break;
@@ -112,28 +117,35 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
 			case RPMTAG_PACKAGER: tagname = "Packager"; break;
 			case RPMTAG_DESCRIPTION: tagname = "Comment"; break;
 		}
-		
-		if (! tagname.isEmpty()) {
+
+		if ( !tagname.isEmpty() || all.isValid() ) {
 			// kdDebug(7034) << "Tag number: " << tag << " Type: " << type << endl;
 			int oldPos = file.at();
 			file.at(offset); // Set file position to correct place in store
 			switch (type) {
-				case RPM_INT32_TYPE:    uint32_t inttag;
-							dstream >> inttag;
-							appendItem(group, tagname, int(inttag));
+				case RPM_INT32_TYPE:	uint32_t int32tag;
+							dstream >> int32tag;
+							if ( !tagname.isEmpty() ) appendItem(general, tagname, int(int32tag));
+							if ( all.isValid() ) appendItem(all, QString("%1").arg( tag ), QString("%1").arg( int32tag ));
+							break;
+				case RPM_INT16_TYPE:	uint16_t int16tag;
+							dstream >> int16tag;
+							if ( !tagname.isEmpty() ) appendItem(general, tagname, int(int16tag));
+							if ( all.isValid() ) appendItem(all, QString("%1").arg( tag ), QString("%1").arg( int16tag ));
 							break;
 				case RPM_I18NSTRING_TYPE: // Fallthru
 				case RPM_STRING_TYPE:   QString strtag; char in;
 							while ( ( in = file.getch() ) != '\0' ) strtag += in;
-							appendItem(group, tagname, strtag);
+							if ( !tagname.isEmpty() ) appendItem(general, tagname, strtag);
+							if( all.isValid() ) appendItem(all, QString("%1").arg( tag ), strtag);
 							break;
 			}
 			file.at(oldPos); // Restore old position
 		}
 	}
-	appendItem(group, "Archive Offset", (storepos + size) );
+	appendItem(general, "Archive Offset", (storepos + size) );
     }
-    
+
     return true;
 }
 
