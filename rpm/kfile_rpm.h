@@ -38,8 +38,11 @@ public:
 #define RPM_HEADER_MAGIC "\216\255\350"
 #define	RPMTAG_NAME  			1000
 #define	RPMTAG_VERSION			1001
+#define RPMTAG_RELEASE                  1002
 #define	RPMTAG_SUMMARY			1004
 #define	RPMTAG_SIZE			1009
+#define RPMTAG_VENDOR                   1011
+#define RPMTAG_PACKAGER                 1015
 #define	RPMTAG_GROUP			1016
 #define RPM_INT16_TYPE		3
 #define RPM_INT32_TYPE		4
