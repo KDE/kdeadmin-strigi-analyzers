@@ -56,6 +56,7 @@ KRpmPlugin::KRpmPlugin(QObject *parent, const char *name,
     setUnit ( item, KFileMimeTypeInfo::Bytes );
     item = addItemInfo(group, "Vendor", i18n("Vendor"), QVariant::String );
     item = addItemInfo(group, "Packager", i18n("Packager"), QVariant::String );
+    item = addItemInfo(group, "Archive Offset", i18n("Archive Offset"), QVariant::Int);
     item = addItemInfo(group, "Comment", i18n("Comment"), QVariant::String);
     setAttributes( item, KFileMimeTypeInfo::MultiLine );
 }
@@ -82,9 +83,9 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
 	unsigned char version;
 	char magic[3];
 	
-	dstream.readRawBytes(magic, 3);	
+	dstream.readRawBytes(magic, 3);
 	dstream >> version >> reserved >> entries >> size;
-	if (memcmp(magic, RPM_HEADER_MAGIC, 3)) return false;	
+	if (memcmp(magic, RPM_HEADER_MAGIC, 3)) return false;
 	if (version != 1) return false; // Only v1 headers supported
 
 	storepos = file.at() + entries * 16;
@@ -130,6 +131,7 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
 			file.at(oldPos); // Restore old position
 		}
 	}
+	appendItem(group, "Archive Offset", (storepos + size) );
     }
     
     return true;
