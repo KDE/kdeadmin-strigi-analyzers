@@ -39,7 +39,6 @@ typedef unsigned int   uint32_t;
 #endif
 
 #include "kfile_rpm.h"
-#include <netinet/in.h>
 
 typedef KGenericFactory<KRpmPlugin> RpmFactory;
 
@@ -62,32 +61,6 @@ KRpmPlugin::KRpmPlugin(QObject *parent, const char *name,
     item = addItemInfo(group, "Size", i18n("Size"), QVariant::Int);
 }
 
-QString KRpmPlugin::getStringTag( QFile& file, uint32_t offset, uint32_t type )
-{
-    int old = file.at();
-    QString result = "";
-    char in;
-    if (type != RPM_STRING_TYPE && type != RPM_I18NSTRING_TYPE) return result;
-    
-    file.at(offset);
-    while ((in = file.getch()) != '\0') result += in;
-    file.at(old);
-    return result;
-}
-
-uint32_t KRpmPlugin::getInt32Tag( QFile& file, QDataStream& dfile, uint32_t offset, uint32_t type )
-{
-    int old = file.at();
-    uint32_t num = 0;
-    if (type != RPM_INT32_TYPE) return num;
-    
-    file.at(offset);
-    dfile >> num;
-    file.at(old);
-    return num;
-
-}
-
 bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
 {
     QFile file(info.path());
@@ -105,7 +78,7 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
     
     file.at(96); // Seek past old lead
     
-    for (pass = 0; pass < 2; pass++) {
+    for (pass = 0; pass < 2; pass++) { // RPMs have two headers
 	uint32_t storepos, entries, size, reserved;
 	uint8_t version;
 	char magic[3];
@@ -116,23 +89,44 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
 	if (version != 1) return false; // Only v1 headers supported
 
 	storepos = file.at() + entries * 16;
+	if (pass == 0) { // Don't need the first batch of tags - pgp etc
+		file.at(storepos + size);
+		file.at(file.at() + (8 - (file.at() % 8)) % 8); // Skip padding
+		continue;
+	}
 	
-	if (entries < 500 && pass != 0) while (entries--) { // Just in case something goes wrong, limit to 500
+	if (entries < 500) while (entries--) { // Just in case something goes wrong, limit to 500
 		uint32_t tag, type, offset, count;
+		QString tagname;
 		dstream >> tag >> type >> offset >> count;
 		offset += storepos;
 		
 		switch (tag) {
-			case RPMTAG_NAME: appendItem(group, "Name", getStringTag(file, offset, type ) ); break;
-			case RPMTAG_VERSION: appendItem(group, "Version", getStringTag(file, offset, type ) ); break;
-			case RPMTAG_SUMMARY: appendItem(group, "Summary", getStringTag(file, offset, type ) ); break;
-			case RPMTAG_GROUP: appendItem(group, "Group", getStringTag(file, offset, type ) ); break;
-			case RPMTAG_SIZE: appendItem(group, "Size", int( getInt32Tag(file, dstream, offset, type ) ) ); break;
+			case RPMTAG_NAME: tagname = "Name"; break;
+			case RPMTAG_VERSION: tagname = "Version"; break;
+			case RPMTAG_SUMMARY: tagname = "Summary"; break;
+			case RPMTAG_GROUP: tagname = "Group"; break;
+			case RPMTAG_SIZE: tagname = "Size"; break;
+		}
+		
+		if (! tagname.isEmpty()) {
+			// kdDebug(7034) << "Tag number: " << tag << " Type: " << type << endl;
+			int oldPos = file.at();
+			file.at(offset); // Set file position to correct place in store
+			switch (type) {
+				case RPM_INT32_TYPE:    uint32_t inttag;
+							dstream >> inttag;
+							appendItem(group, tagname, int(inttag));
+							break;
+				case RPM_I18NSTRING_TYPE: // Fallthru
+				case RPM_STRING_TYPE:   QString strtag; char in;
+							while ( ( in = file.getch() ) != '\0' ) strtag += in;
+							appendItem(group, tagname, strtag);
+							break;
+			}
+			file.at(oldPos); // Restore old position
 		}
 	}
-
-	file.at(storepos + size);
-	if (pass == 0) file.at(file.at() + (8 - (file.at() % 8)) % 8); // Skip padding
     }
     
     return true;

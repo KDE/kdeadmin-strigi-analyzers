@@ -33,10 +33,6 @@ public:
     
     virtual bool readInfo( KFileMetaInfo& info, uint what);
 
-private:    
-    uint32_t getInt32Tag ( QFile& file, QDataStream& dfile, uint32_t offset, uint32_t type );
-    QString getStringTag ( QFile& file, uint32_t offset, uint32_t type );
-
 };
 		
 #define RPM_HEADER_MAGIC "\216\255\350"
