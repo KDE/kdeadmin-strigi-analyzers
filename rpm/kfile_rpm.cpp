@@ -42,7 +42,7 @@ typedef unsigned int   uint32_t;
 
 typedef KGenericFactory<KRpmPlugin> RpmFactory;
 
-K_EXPORT_COMPONENT_FACTORY(kfile_rpm, RpmFactory( "kfile_rpm" ));
+K_EXPORT_COMPONENT_FACTORY(kfile_rpm, RpmFactory( "kfile_rpm" ))
 
 KRpmPlugin::KRpmPlugin(QObject *parent, const char *name,
                        const QStringList &args)
