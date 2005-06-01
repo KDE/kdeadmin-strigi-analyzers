@@ -48,7 +48,7 @@ KDebPlugin::KDebPlugin(QObject *parent, const char *name,
     
     : KFilePlugin(parent, name, args)
 {
-    KFileMimeTypeInfo* info = addMimeTypeInfo( "application/x-debian-package" );
+    KFileMimeTypeInfo* info = addMimeTypeInfo( "application/x-deb" );
     KFileMimeTypeInfo::GroupInfo* group = 0L;
     group = addGroupInfo(info, "General", i18n("General"));
     KFileMimeTypeInfo::ItemInfo* item;
@@ -70,15 +70,23 @@ bool KDebPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
 
     const KArchiveDirectory* debdir = debfile.directory();
     const KArchiveEntry* controlentry = debdir->entry( "control.tar.gz" );
-    Q_ASSERT( controlentry && controlentry->isFile() );
-    
-    KTar tarfile ( KFilterDev::device( static_cast<const KArchiveFile *>(controlentry)->device(), "application/x-gzip" ) );
-    
-    if ( !tarfile.open( IO_ReadOnly ) ) {
-        kdDebug(7034) << "Couldn't open control.tar.gz" << endl;
-        return false;    
+    if ( !controlentry || !controlentry->isFile() ) {
+        kdWarning(7034) << "control.tar.gz not found" << endl;
+        return false;
     }
-        
+
+    QIODevice* filterDev = KFilterDev::device( static_cast<const KArchiveFile *>( controlentry )->device(), "application/x-gzip" );
+    if ( !filterDev ) {
+        kdWarning(7034) << "Couldn't create filter device for control.tar.gz" << endl;
+        return false;
+    }
+    KTar tarfile( filterDev );
+
+    if ( !tarfile.open( IO_ReadOnly ) ) {
+        kdWarning(7034) << "Couldn't open control.tar.gz" << endl;
+        return false;
+    }
+
     const KArchiveDirectory* controldir = tarfile.directory();
     Q_ASSERT( controldir );
     
