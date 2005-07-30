@@ -25,9 +25,9 @@
 #include <kstringvalidator.h>
 #include <kdebug.h>
 
-#include <qdict.h>
+#include <q3dict.h>
 #include <qvalidator.h>
-#include <qcstring.h>
+#include <q3cstring.h>
 #include <qfile.h>
 #include <qdatetime.h>
 #include <qbuffer.h>
@@ -63,7 +63,7 @@ bool KDebPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
 {
     KAr debfile (info.path());
   
-    if ( !debfile.open( IO_ReadOnly ) ) {
+    if ( !debfile.open( QIODevice::ReadOnly ) ) {
         kdDebug(7034) << "Couldn't open " << QFile::encodeName(info.path()) << endl;
         return false;    
     }
@@ -82,7 +82,7 @@ bool KDebPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
     }
     KTar tarfile( filterDev );
 
-    if ( !tarfile.open( IO_ReadOnly ) ) {
+    if ( !tarfile.open( QIODevice::ReadOnly ) ) {
         kdWarning(7034) << "Couldn't open control.tar.gz" << endl;
         return false;
     }
@@ -98,8 +98,8 @@ bool KDebPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
         QByteArray control( static_cast<const KArchiveFile *>(controlfile)->data() );
     
         // Now process control array
-        QBuffer controldev(control);
-        controldev.open( IO_ReadOnly );
+        QBuffer controldev(&control);
+        controldev.open( QIODevice::ReadOnly );
         while (!controldev.atEnd()) {
             char linebuf[100];
             controldev.readLine(linebuf, sizeof( linebuf ));
