@@ -46,8 +46,9 @@ K_EXPORT_COMPONENT_FACTORY(kfile_deb, DebFactory( "kfile_deb" ))
 KDebPlugin::KDebPlugin(QObject *parent, const char *name,
                        const QStringList &args)
     
-    : KFilePlugin(parent, name, args)
+    : KFilePlugin(parent, args)
 {
+	setObjectName(name);
     KFileMimeTypeInfo* info = addMimeTypeInfo( "application/x-deb" );
     KFileMimeTypeInfo::GroupInfo* group = 0L;
     group = addGroupInfo(info, "General", i18n("General"));

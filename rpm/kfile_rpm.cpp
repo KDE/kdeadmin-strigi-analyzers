@@ -39,8 +39,9 @@ K_EXPORT_COMPONENT_FACTORY(kfile_rpm, RpmFactory( "kfile_rpm" ))
 KRpmPlugin::KRpmPlugin(QObject *parent, const char *name,
                        const QStringList &args)
     
-    : KFilePlugin(parent, name, args)
+    : KFilePlugin(parent, args)
 {
+	setObjectName(name);
     KFileMimeTypeInfo* info = addMimeTypeInfo( "application/x-rpm" );
     KFileMimeTypeInfo::GroupInfo* group = 0L;
     group = addGroupInfo(info, "General", i18n("General"));
