@@ -105,7 +105,7 @@ bool KDebPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
             char linebuf[100];
             controldev.readLine(linebuf, sizeof( linebuf ));
             QString line(linebuf);
-            int fieldstart = line.find(QRegExp(":"), 0) + 2;
+            int fieldstart = line.indexOf(QRegExp(":"), 0) + 2;
             if (fieldstart == 1) break;
             QString fieldname = line.mid(0, fieldstart - 2);
             QString fielddata = line.mid(fieldstart, line.length() - fieldstart - 1);
