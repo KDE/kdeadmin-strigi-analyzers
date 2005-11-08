@@ -71,7 +71,7 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint what)
     int pass;
     KFileMetaInfoGroup general, all;
 
-    if (!file.open(IO_ReadOnly))
+    if (!file.open(QIODevice::ReadOnly))
     {
         kdDebug(7034) << "Couldn't open " << QFile::encodeName(info.path()) << endl;
         return false;
@@ -82,7 +82,7 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint what)
     general = appendGroup(info, "General");
     if (what == KFileMetaInfo::Everything) all = appendGroup(info, "All tags");
 
-    file.at(96); // Seek past old lead
+    file.seek(96); // Seek past old lead
 
     for (pass = 0; pass < 2; pass++) { // RPMs have two headers
 	uint32_t storepos, entries, size, reserved;
@@ -94,10 +94,10 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint what)
 	if (memcmp(magic, RPM_HEADER_MAGIC, 3)) return false;
 	if (version != 1) return false; // Only v1 headers supported
 
-	storepos = file.at() + entries * 16;
+	storepos = file.pos() + entries * 16;
 	if (pass == 0) { // Don't need the first batch of tags - pgp etc
-		file.at(storepos + size);
-		file.at(file.at() + (8 - (file.at() % 8)) % 8); // Skip padding
+		file.seek(storepos + size);
+		file.seek(file.pos() + (8 - (file.pos() % 8)) % 8); // Skip padding
 		continue;
 	}
 
@@ -121,8 +121,8 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint what)
 
 		if ( !tagname.isEmpty() || all.isValid() ) {
 			// kdDebug(7034) << "Tag number: " << tag << " Type: " << type << endl;
-			int oldPos = file.at();
-			file.at(offset); // Set file position to correct place in store
+			int oldPos = file.pos();
+			file.seek(offset); // Set file position to correct place in store
 			switch (type) {
 				case RPM_INT32_TYPE:	uint32_t int32tag;
 							dstream >> int32tag;
@@ -141,7 +141,7 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint what)
 							if( all.isValid() ) appendItem(all, QString("%1").arg( tag ), strtag);
 							break;
 			}
-			file.at(oldPos); // Restore old position
+			file.seek(oldPos); // Restore old position
 		}
 	}
 	appendItem(general, "Archive Offset", (storepos + size) );
