@@ -2,7 +2,7 @@
 
 # set the include path for X, qt and KDE
 INCLUDES         = $(all_includes)
-
+KDE_CXXFLAGS = -UQT3_SUPPORT
 # these are the headers for your project
 noinst_HEADERS   = kfile_deb.h
 
