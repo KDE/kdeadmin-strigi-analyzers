@@ -53,6 +53,7 @@ Name[uk]=Дані DEB
 Name[ven]=Mbalo dza DEB
 Name[wa]=Sitatistikes DEB
 Name[zh_CN]=DEB 统计
+Name[zh_HK]=DEB 統計
 ServiceTypes=KFilePlugin
 X-KDE-Library=kfile_deb
 MimeType=application/x-debian-package
