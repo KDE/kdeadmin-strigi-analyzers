@@ -73,7 +73,7 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint what)
 
     if (!file.open(QIODevice::ReadOnly))
     {
-        kdDebug(7034) << "Couldn't open " << QFile::encodeName(info.path()) << endl;
+        kDebug(7034) << "Couldn't open " << QFile::encodeName(info.path()) << endl;
         return false;
     }
 
@@ -120,7 +120,7 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint what)
 		}
 
 		if ( !tagname.isEmpty() || all.isValid() ) {
-			// kdDebug(7034) << "Tag number: " << tag << " Type: " << type << endl;
+			// kDebug(7034) << "Tag number: " << tag << " Type: " << type << endl;
 			int oldPos = file.pos();
 			file.seek(offset); // Set file position to correct place in store
 			switch (type) {

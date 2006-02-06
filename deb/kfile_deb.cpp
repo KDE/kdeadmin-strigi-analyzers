@@ -65,26 +65,26 @@ bool KDebPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
     KAr debfile (info.path());
   
     if ( !debfile.open( QIODevice::ReadOnly ) ) {
-        kdDebug(7034) << "Couldn't open " << QFile::encodeName(info.path()) << endl;
+        kDebug(7034) << "Couldn't open " << QFile::encodeName(info.path()) << endl;
         return false;    
     }
 
     const KArchiveDirectory* debdir = debfile.directory();
     const KArchiveEntry* controlentry = debdir->entry( "control.tar.gz" );
     if ( !controlentry || !controlentry->isFile() ) {
-        kdWarning(7034) << "control.tar.gz not found" << endl;
+        kWarning(7034) << "control.tar.gz not found" << endl;
         return false;
     }
 
     QIODevice* filterDev = KFilterDev::device( static_cast<const KArchiveFile *>( controlentry )->device(), "application/x-gzip" );
     if ( !filterDev ) {
-        kdWarning(7034) << "Couldn't create filter device for control.tar.gz" << endl;
+        kWarning(7034) << "Couldn't create filter device for control.tar.gz" << endl;
         return false;
     }
     KTar tarfile( filterDev );
 
     if ( !tarfile.open( QIODevice::ReadOnly ) ) {
-        kdWarning(7034) << "Couldn't open control.tar.gz" << endl;
+        kWarning(7034) << "Couldn't open control.tar.gz" << endl;
         return false;
     }
 
@@ -115,10 +115,10 @@ bool KDebPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
             else if (fieldname == "Description") appendItem(group, "Summary", fielddata);
             else if (fieldname == "Installed-Size") appendItem(group, "Size", int(fielddata.toInt()));
 
-            kdDebug(7034) << "Name: [" << fieldname << "] Data: [" << fielddata << "]" << endl;
+            kDebug(7034) << "Name: [" << fieldname << "] Data: [" << fielddata << "]" << endl;
         }
     } else {
-        kdDebug(7034) << "Couldn't read control file" << endl;
+        kDebug(7034) << "Couldn't read control file" << endl;
         return false;
     }
     
