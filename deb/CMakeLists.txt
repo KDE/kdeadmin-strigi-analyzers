@@ -14,7 +14,7 @@ kde4_add_plugin(kfile_deb ${kfile_deb_PART_SRCS})
 
 kde4_install_libtool_file( ${PLUGIN_INSTALL_DIR} kfile_deb )
 
-target_link_libraries(kfile_deb  ${QT_AND_KDECORE_LIBS} kio )
+target_link_libraries(kfile_deb  ${KDE4_KDECORE_LIBS} kio )
 
 install_targets(${LIB_INSTALL_DIR}/kde4 kfile_deb )
 
