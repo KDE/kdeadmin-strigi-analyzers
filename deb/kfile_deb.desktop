@@ -6,5 +6,5 @@ Name[fr]=État DEB
 Name[x-test]=xxDEB Statsxx
 ServiceTypes=KFilePlugin
 X-KDE-Library=kfile_deb
-MimeType=application/x-debian-package
+MimeType=application/x-deb
 PreferredItems=Name,Version,Summary,Size
