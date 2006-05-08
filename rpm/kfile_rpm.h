@@ -29,7 +29,7 @@ class KRpmPlugin: public KFilePlugin
     Q_OBJECT
     
 public:
-    KRpmPlugin( QObject *parent, const char *name, const QStringList& args );
+    KRpmPlugin( QObject *parent, const QStringList& args );
     
     virtual bool readInfo( KFileMetaInfo& info, uint what);
 

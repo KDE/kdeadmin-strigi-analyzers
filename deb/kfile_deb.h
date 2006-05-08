@@ -29,7 +29,7 @@ class KDebPlugin: public KFilePlugin
     Q_OBJECT
     
 public:
-    KDebPlugin( QObject *parent, const char *name, const QStringList& args );
+    KDebPlugin( QObject *parent, const QStringList& args );
     
     virtual bool readInfo( KFileMetaInfo& info, uint what);
 
