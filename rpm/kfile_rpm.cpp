@@ -21,7 +21,7 @@
 
 #include <kgenericfactory.h>
 #include <kdebug.h>
-#include <qfile.h>
+#include <QFile>
 
 #if !defined(__osf__)
 #include <inttypes.h>
