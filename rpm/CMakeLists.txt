@@ -1,4 +1,3 @@
-kde4_header()
 project(rpm)
 
 
@@ -22,7 +21,6 @@ install_targets(${PLUGIN_INSTALL_DIR} kfile_rpm )
 
 install_files( ${SERVICES_INSTALL_DIR} FILES kfile_rpm.desktop )
 
-kde4_footer()
 
 
 

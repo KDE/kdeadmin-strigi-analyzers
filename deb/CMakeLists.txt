@@ -1,4 +1,3 @@
-kde4_header()
 
 project(deb)
 
@@ -23,7 +22,6 @@ install_targets(${PLUGIN_INSTALL_DIR} kfile_deb )
 
 install_files( ${SERVICES_INSTALL_DIR} FILES kfile_deb.desktop )
 
-kde4_footer()
 
 
 
