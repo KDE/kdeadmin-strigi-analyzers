@@ -56,6 +56,7 @@ Name[ven]=Mbalo dza RPM
 Name[wa]=Sitatistikes RPM
 Name[zh_CN]=RPM 统计
 Name[zh_HK]=RPM 統計
+Name[zh_TW]=RPM 統計
 ServiceTypes=KFilePlugin
 X-KDE-Library=kfile_rpm
 MimeType=application/x-rpm
