@@ -14,12 +14,12 @@ kde4_install_libtool_file( ${PLUGIN_INSTALL_DIR} kfile_rpm )
 
 target_link_libraries(kfile_rpm  ${KDE4_KIO_LIBS} )
 
-install_targets(${PLUGIN_INSTALL_DIR} kfile_rpm )
+install(TARGETS kfile_rpm  DESTINATION ${PLUGIN_INSTALL_DIR} )
 
 
 ########### install files ###############
 
-install_files( ${SERVICES_INSTALL_DIR} FILES kfile_rpm.desktop )
+install( FILES kfile_rpm.desktop  DESTINATION  ${SERVICES_INSTALL_DIR} )
 
 
 
