@@ -7,7 +7,7 @@ project(deb)
 
 set(kfile_deb_PART_SRCS kfile_deb.cpp )
 
-kde4_automoc(${kfile_deb_PART_SRCS})
+kde4_automoc(kfile_deb ${kfile_deb_PART_SRCS})
 
 kde4_add_plugin(kfile_deb ${kfile_deb_PART_SRCS})
 
