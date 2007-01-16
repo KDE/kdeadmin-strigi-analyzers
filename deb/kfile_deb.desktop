@@ -2,6 +2,7 @@
 Type=Service
 Encoding=UTF-8
 Name=DEB Stats
+Name[el]=Στατιστικά DEB
 Name[fr]=État DEB
 Name[x-test]=xxDEB Statsxx
 ServiceTypes=KFilePlugin
