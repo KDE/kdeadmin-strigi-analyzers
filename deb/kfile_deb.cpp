@@ -75,15 +75,18 @@ bool KDebPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
         return false;
     }
 
-    QIODevice* filterDev = KFilterDev::device( static_cast<const KArchiveFile *>( controlentry )->device(), "application/x-gzip" );
+    QIODevice* fileDevice = static_cast<const KArchiveFile *>( controlentry )->createDevice();
+    QIODevice* filterDev = KFilterDev::device( fileDevice, "application/x-gzip" );
     if ( !filterDev ) {
         kWarning(7034) << "Couldn't create filter device for control.tar.gz" << endl;
+        delete fileDevice;
         return false;
     }
     KTar tarfile( filterDev );
 
     if ( !tarfile.open( QIODevice::ReadOnly ) ) {
         kWarning(7034) << "Couldn't open control.tar.gz" << endl;
+        delete fileDevice;
         return false;
     }
 
@@ -118,12 +121,14 @@ bool KDebPlugin::readInfo( KFileMetaInfo& info, uint /*what*/)
         }
     } else {
         kDebug(7034) << "Couldn't read control file" << endl;
+        delete fileDevice;
         return false;
     }
-    
-    tarfile.close();    
+
+    tarfile.close();
     debfile.close();
 
+    delete fileDevice;
     return true;
 }
 
