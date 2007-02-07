@@ -17,8 +17,6 @@
  *
  */
 
-#include <config.h>
-
 #include <kprocess.h>
 #include <klocale.h>
 #include <kgenericfactory.h>

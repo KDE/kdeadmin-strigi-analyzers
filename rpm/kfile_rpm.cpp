@@ -17,8 +17,6 @@
  *
  */
 
-#include <config.h>
-
 #include <kgenericfactory.h>
 #include <kdebug.h>
 #include <QFile>
