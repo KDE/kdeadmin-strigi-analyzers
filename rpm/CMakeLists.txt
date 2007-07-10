@@ -6,8 +6,6 @@ project(rpm)
 
 set(kfile_rpm_PART_SRCS kfile_rpm.cpp )
 
-kde4_automoc(${kfile_rpm_PART_SRCS})
-
 kde4_add_plugin(kfile_rpm ${kfile_rpm_PART_SRCS})
 
 
