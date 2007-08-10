@@ -1,2 +1,2 @@
 #! /usr/bin/env bash
-$XGETTEXT *.cpp *.h -o $podir/kfile_rpm.pot
+$XGETTEXT *.cpp -o $podir/kfile_rpm.pot
