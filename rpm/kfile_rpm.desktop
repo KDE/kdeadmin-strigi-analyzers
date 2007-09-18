@@ -49,6 +49,7 @@ Name[uk]=Дані RPM
 Name[vi]=Thống kê RPM
 Name[wa]=Sitatistikes RPM
 Name[x-test]=xxRPM Statsxx
+Name[zh_CN]=RPM 统计
 Name[zh_HK]=RPM 統計
 Name[zh_TW]=RPM 統計
 ServiceTypes=KFilePlugin
