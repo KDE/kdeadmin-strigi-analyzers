@@ -17,6 +17,8 @@
  *
  */
 
+#include "kfile_rpm.h"
+
 #include <kgenericfactory.h>
 #include <kdebug.h>
 #include <QFile>
@@ -27,8 +29,6 @@
 typedef unsigned short uint16_t;
 typedef unsigned int   uint32_t;
 #endif
-
-#include "kfile_rpm.h"
 
 typedef KGenericFactory<KRpmPlugin> RpmFactory;
 
@@ -81,7 +81,7 @@ bool KRpmPlugin::readInfo( KFileMetaInfo& info, uint what)
 
     file.seek(96); // Seek past old lead
 
-    for (pass = 0; pass < 2; pass++) { // RPMs have two headers
+    for (pass = 0; pass < 2; ++pass) { // RPMs have two headers
 	uint32_t storepos, entries, size, reserved;
 	unsigned char version;
 	char magic[3];
